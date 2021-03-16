@@ -19,9 +19,12 @@ namespace AppInsights.Infrastructure.Data
             _dbContext = dbContext;
         }
 
+
         public T GetById<T>(int id) where T : BaseEntity, IAggregateRoot
         {
             return _dbContext.Set<T>().SingleOrDefault(e => e.Id == id);
+
+
         }
 
         public Task<T> GetByIdAsync<T>(int id) where T : BaseEntity, IAggregateRoot
@@ -52,6 +55,8 @@ namespace AppInsights.Infrastructure.Data
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             return _dbContext.SaveChangesAsync();
+
+
         }
 
         public Task DeleteAsync<T>(T entity) where T : BaseEntity, IAggregateRoot
@@ -64,6 +69,11 @@ namespace AppInsights.Infrastructure.Data
         {
             var evaluator = SpecificationEvaluator.Default;
             return evaluator.GetQuery<T>(_dbContext.Set<T>().AsQueryable(), spec);
+        }
+
+        public IQueryable<T> Queryable<T>() where T : BaseEntity, IAggregateRoot
+        {
+            return _dbContext.Set<T>().AsQueryable();
         }
     }
 }

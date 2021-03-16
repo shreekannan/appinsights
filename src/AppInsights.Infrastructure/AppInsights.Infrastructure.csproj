@@ -21,4 +21,7 @@
     <ProjectReference Include="..\AppInsights.Core\AppInsights.Core.csproj" />
     <ProjectReference Include="..\AppInsights.SharedKernel\AppInsights.SharedKernel.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Config\" />
+  </ItemGroup>
 </Project>

@@ -23,7 +23,7 @@ namespace AppInsights.Infrastructure.Data
             _mediator = mediator;
         }
 
-        public DbSet<ToDoItem> ToDoItems { get; set; }
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,8 @@ namespace AppInsights.Infrastructure.Data
             // ignore events if no dispatcher provided
             if (_mediator == null) return result;
 
+
+            /*
             // dispatch events only if save was successful
             var entitiesWithEvents = ChangeTracker.Entries<BaseEntity>()
                 .Select(e => e.Entity)
@@ -56,7 +58,8 @@ namespace AppInsights.Infrastructure.Data
                 {
                     await _mediator.Publish(domainEvent).ConfigureAwait(false);
                 }
-            }
+            }*/
+
 
             return result;
         }

@@ -3,23 +3,23 @@ using System.Reflection;
 using Autofac;
 using AppInsights.Core;
 using AppInsights.Core.Interfaces;
-using AppInsights.Infrastructure.Data;
 using AppInsights.SharedKernel.Interfaces;
 using MediatR;
 using MediatR.Pipeline;
 using Module = Autofac.Module;
+using AppInsights.Core.Services;
 
 namespace AppInsights.Infrastructure
 {
-    public class DefaultInfrastructureModule : Module
+    public class DefaultCoreModule : Module
     {
         private bool _isDevelopment = false;
         private List<Assembly> _assemblies = new List<Assembly>();
 
-        public DefaultInfrastructureModule(bool isDevelopment, Assembly callingAssembly =  null)
+        public DefaultCoreModule(bool isDevelopment, Assembly callingAssembly =  null)
         {
             _isDevelopment = isDevelopment;
-            var infrastructureAssembly = Assembly.GetAssembly(typeof(EfRepository));
+            var infrastructureAssembly = Assembly.GetAssembly(typeof(IActivityLogSearchService));
             _assemblies.Add(infrastructureAssembly);
             if (callingAssembly != null)
             {
@@ -42,37 +42,8 @@ namespace AppInsights.Infrastructure
 
         private void RegisterCommonDependencies(ContainerBuilder builder)
         {
-            builder.RegisterType<EfRepository>().As<IRepository>()
+            builder.RegisterType<ActivityLogSearchService>().As<IActivityLogSearchService>()
                 .InstancePerLifetimeScope();
-
-            builder
-                .RegisterType<Mediator>()
-                .As<IMediator>()
-                .InstancePerLifetimeScope();
-
-            builder.Register<ServiceFactory>(context =>
-            {
-                var c = context.Resolve<IComponentContext>();
-                return t => c.Resolve(t);
-            });
-
-            var mediatrOpenTypes = new[]
-            {
-                typeof(IRequestHandler<,>),
-                typeof(IRequestExceptionHandler<,,>),
-                typeof(IRequestExceptionAction<,>),
-                typeof(INotificationHandler<>),
-            };
-
-            foreach (var mediatrOpenType in mediatrOpenTypes)
-            {
-                builder
-                .RegisterAssemblyTypes(_assemblies.ToArray())
-                .AsClosedTypesOf(mediatrOpenType)
-                .AsImplementedInterfaces();
-            }
-
-           
         }
 
         private void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)

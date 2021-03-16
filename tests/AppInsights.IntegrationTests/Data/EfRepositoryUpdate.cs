@@ -10,6 +10,7 @@ namespace AppInsights.IntegrationTests.Data
 {
     public class EfRepositoryUpdate : BaseEfRepoTestFixture
     {
+        /*
         [Fact]
         public async Task UpdatesItemAfterAddingIt()
         {
@@ -40,5 +41,6 @@ namespace AppInsights.IntegrationTests.Data
             Assert.NotEqual(item.Title, updatedItem.Title);
             Assert.Equal(newItem.Id, updatedItem.Id);
         }
+        */
     }
 }

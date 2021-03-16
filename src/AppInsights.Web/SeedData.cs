@@ -9,29 +9,40 @@ namespace AppInsights.Web
 {
     public static class SeedData
     {
-        public static readonly ToDoItem ToDoItem1 = new ToDoItem
+        public static readonly ActivityLog item1 = new ActivityLog
         {
-            Title = "Get Sample Working",
-            Description = "Try to get the sample to build."
+            ClientID = "XYZ-0001",
+            ServerName = "SP_DEV01",
+            ActivityDateTimeUTC = DateTime.UtcNow.ToString(),
+            IsOnline = true
         };
-        public static readonly ToDoItem ToDoItem2 = new ToDoItem
+        public static readonly ActivityLog item2 = new ActivityLog
         {
-            Title = "Review Solution",
-            Description = "Review the different projects in the solution and how they relate to one another."
+            ClientID = "XYZ-0001",
+            ServerName = "SP_DEV02",
+            ActivityDateTimeUTC = DateTime.UtcNow.AddMinutes(-1).ToString() ,
+            IsOnline = false
         };
-        public static readonly ToDoItem ToDoItem3 = new ToDoItem
+        public static readonly ActivityLog item3 = new ActivityLog
         {
-            Title = "Run and Review Tests",
-            Description = "Make sure all the tests run and review what they are doing."
+            ClientID = "ABC-0002",
+            ServerName = "SP_DEV02",
+            ActivityDateTimeUTC = DateTime.UtcNow.AddMinutes(-2).ToString(),
+            IsOnline = false
         };
 
         public static void Initialize(IServiceProvider serviceProvider)
         {
+       
             using (var dbContext = new AppDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
             {
+
+              
+                //dbContext.Database.Migrate();
+
                 // Look for any TODO items.
-                if (dbContext.ToDoItems.Any())
+                if (dbContext.ActivityLogs.Any())
                 {
                     return;   // DB has been seeded
                 }
@@ -39,20 +50,59 @@ namespace AppInsights.Web
                 PopulateTestData(dbContext);
 
 
+
             }
         }
         public static void PopulateTestData(AppDbContext dbContext)
         {
-            foreach (var item in dbContext.ToDoItems)
+  
+            foreach (var item in dbContext.ActivityLogs)
             {
                 dbContext.Remove(item);
             }
             dbContext.SaveChanges();
-            dbContext.ToDoItems.Add(ToDoItem1);
-            dbContext.ToDoItems.Add(ToDoItem2);
-            dbContext.ToDoItems.Add(ToDoItem3);
+            dbContext.ActivityLogs.Add(new ActivityLog
+            {
+                ClientID = "XYZ-0001",
+                ServerName = "PROD_WFE01",
+                ActivityDateTimeUTC = DateTime.UtcNow.ToString(),
+                IsOnline = true
+            });
+
+            dbContext.ActivityLogs.Add(new ActivityLog
+            {
+                ClientID = "XYZ-0001",
+                ServerName = "PROD_WFE02",
+                ActivityDateTimeUTC = DateTime.UtcNow.AddMinutes(-1).ToString(),
+                IsOnline = false
+            });
+            dbContext.SaveChanges();
+            dbContext.ActivityLogs.Add( new ActivityLog
+            {
+                ClientID = "XYZ-0001",
+                ServerName = "PROD_APP01",
+                ActivityDateTimeUTC = DateTime.UtcNow.AddMinutes(-1).ToString(),
+                IsOnline = true
+            });
+            dbContext.SaveChanges();
+            dbContext.ActivityLogs.Add(new ActivityLog
+            {
+                ClientID = "ABC-0002",
+                ServerName = "WFE01",
+                ActivityDateTimeUTC = DateTime.UtcNow.AddMinutes(-1).ToString(),
+                IsOnline = true
+            });
+
+            dbContext.ActivityLogs.Add(new ActivityLog
+            {
+                ClientID = "ABC-0002",
+                ServerName = "APP01",
+                ActivityDateTimeUTC = DateTime.UtcNow.AddMinutes(-3).ToString(),
+                IsOnline = false
+            });
 
             dbContext.SaveChanges();
+
         }
     }
 }

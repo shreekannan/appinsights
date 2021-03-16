@@ -4,35 +4,35 @@ namespace AppInsights.UnitTests
 {
     // Learn more about test builders:
     // https://ardalis.com/improve-tests-with-the-builder-pattern-for-test-data
-    public class ToDoItemBuilder
+    public class ActivityLogBuilder
     {
-        private ToDoItem _todo = new ToDoItem();
+        private ActivityLog _activityLog = new ActivityLog();
 
-        public ToDoItemBuilder Id(int id)
+        public ActivityLogBuilder Id(int id)
         {
-            _todo.Id = id;
+            _activityLog.Id = id;
             return this;
         }
 
-        public ToDoItemBuilder Title(string title)
+        public ActivityLogBuilder ServerName(string serverName)
         {
-            _todo.Title = title;
+            _activityLog.ServerName = serverName;
             return this;
         }
 
-        public ToDoItemBuilder Description(string description)
+        public ActivityLogBuilder IsOnline(bool IsOnline)
         {
-            _todo.Description = description;
+            _activityLog.IsOnline = IsOnline;
             return this;
         }
 
-        public ToDoItemBuilder WithDefaultValues()
+        public ActivityLogBuilder WithDefaultValues()
         {
-            _todo = new ToDoItem() { Id = 1, Title = "Test Item", Description = "Test Description" };
+            _activityLog = new ActivityLog() { Id = 1, ServerName = "PROD_APP01", ActivityDateTimeUTC = System.DateTime.UtcNow.ToString(), IsOnline=true, ClientID="XYZ-0001" };
 
             return this;
         }
 
-        public ToDoItem Build() => _todo;
+        public ActivityLog Build() => _activityLog;
     }
 }

@@ -8,6 +8,8 @@ namespace AppInsights.IntegrationTests.Data
 {
     public class EfRepositoryAdd : BaseEfRepoTestFixture
     {
+
+        /*
         [Fact]
         public async Task AddsItemAndSetsId()
         {
@@ -21,6 +23,6 @@ namespace AppInsights.IntegrationTests.Data
 
             Assert.Equal(item, newItem);
             Assert.True(newItem?.Id > 0);
-        }
+        }*/
     }
 }

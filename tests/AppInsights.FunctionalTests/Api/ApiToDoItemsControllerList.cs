@@ -21,15 +21,15 @@ namespace AppInsights.FunctionalTests.Api
         [Fact]
         public async Task ReturnsTwoItems()
         {
-            var response = await _client.GetAsync("/api/todoitems");
+            var response = await _client.GetAsync("/api/appinsights");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<IEnumerable<ToDoItem>>(stringResponse).ToList();
+            var result = JsonConvert.DeserializeObject<IEnumerable<ActivityLog>>(stringResponse).ToList();
 
             Assert.Equal(3, result.Count());
-            Assert.Contains(result, i => i.Title == SeedData.ToDoItem1.Title);
-            Assert.Contains(result, i => i.Title == SeedData.ToDoItem2.Title);
-            Assert.Contains(result, i => i.Title == SeedData.ToDoItem3.Title);
+            Assert.Contains(result, i => i.ServerName == SeedData.item1.ServerName);
+            Assert.Contains(result, i => i.ServerName == SeedData.item2.ServerName);
+            Assert.Contains(result, i => i.ServerName == SeedData.item3.ServerName);
         }
     }
 }

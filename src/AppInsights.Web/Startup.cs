@@ -40,7 +40,7 @@ namespace AppInsights.Web
 			services.AddRazorPages();
 
 			services.AddSwaggerGen(c => {
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "App Insights API", Version = "v1" });
 				c.EnableAnnotations();
 			});
 
@@ -56,6 +56,7 @@ namespace AppInsights.Web
 
 		public void ConfigureContainer(ContainerBuilder builder)
 		{
+			builder.RegisterModule(new DefaultCoreModule(_env.EnvironmentName == "Development"));
 			builder.RegisterModule(new DefaultInfrastructureModule(_env.EnvironmentName == "Development"));
 		}
 

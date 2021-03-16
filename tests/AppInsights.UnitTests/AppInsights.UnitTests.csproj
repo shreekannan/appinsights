@@ -32,4 +32,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Entities\" />
+    <Folder Include="Core\Handlers\" />
+  </ItemGroup>
 </Project>

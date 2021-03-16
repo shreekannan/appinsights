@@ -11,17 +11,19 @@ namespace AppInsights.UnitTests.Core.Specifications
         [Fact]
         public void FilterCollectionToOnlyReturnItemsWithIsDoneFalse()
         {
-            var item1 = new ToDoItem();
-            var item2 = new ToDoItem();
-            var item3 = new ToDoItem();
-            item3.MarkComplete();
+           
+            var item1 = new ActivityLog();
+            var item2 = new ActivityLog();
+            var item3 = new ActivityLog();
+            
+            
+           var items = new List<ActivityLog>() { item1, item2, item3 };
 
-            var items = new List<ToDoItem>() { item1, item2, item3 };
-
-            var spec = new IncompleteItemsSpecification();
-            List<ToDoItem> filteredList = items
-                .Where(spec.WhereExpressions.First().Compile())
-                .ToList();
+           var spec = new ClientHostActivityLogSpecification("","");
+           List<ActivityLog> filteredList = items
+               .Where(spec.WhereExpressions.First().Compile())
+               .ToList();
+           
 
             Assert.Contains(item1, filteredList);
             Assert.Contains(item2, filteredList);
