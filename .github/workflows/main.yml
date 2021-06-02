@@ -73,4 +73,7 @@ jobs:
         id: step_two
         run: |
           echo "${{ env.environment }}" # This will output 'yellow'
+          
+      - name: Run a one-line script
+        run: echo Hello, world! ${{ env }} ${{ secrets.AZURE_USER }}
       
