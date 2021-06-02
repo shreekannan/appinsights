@@ -22,12 +22,19 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: 
-      name: SIT
+      name: DEV
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
+      - name: Set env to staging
+        if: endsWith(github.ref, '/develop')
+        run: |
+          echo "::set-env name=ENVIRONMENT::staging"
+      - name: Set env to production
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "::set-env name=ENVIRONMENT::SIT"
+        
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world! ${{ env.name }} ${{ secrets.AZURE_USER }}
@@ -37,3 +44,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
